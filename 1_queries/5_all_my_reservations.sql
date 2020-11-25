@@ -1,10 +1,4 @@
-/* 
-All Res Details
-All Property Details
-Avg Property Rating
- */
-
-SELECT res.id AS res_id,res.start_date, prop.title, AVG(rev.rating)
+SELECT res.*, prop.*, AVG(rev.rating)
 FROM reservations res
 JOIN properties prop ON res.property_id = prop.id
 JOIN property_reviews rev ON rev.property_id = prop.id
