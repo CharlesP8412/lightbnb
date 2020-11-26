@@ -70,7 +70,23 @@ exports.addUser = addUser;
  * @return {Promise<[{}]>} A promise to the reservations.
  */
 const getAllReservations = function (guest_id, limit = 10) {
-  return getAllProperties(null, 2);
+  // Rtns Reservations > Not set by Date ie > NOW()
+  const queryString = (`
+  SELECT res.*, prop.* 
+  FROM reservations res
+  JOIN properties prop ON res.property_id = prop.id
+  WHERE guest_id = $1
+  ORDER BY start_date DESC
+  LIMIT $2;
+  `)
+  const values = [guest_id, limit]
+
+  return Promise.resolve(pool.query(queryString, values)
+    .then(res => {
+      return res.rows;
+    })
+  );
+
 }
 exports.getAllReservations = getAllReservations;
 
